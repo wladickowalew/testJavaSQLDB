@@ -3,6 +3,8 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Random;
+import java.util.Scanner;
 
 
 public class conn {
@@ -36,98 +38,50 @@ public class conn {
 
     public static void WriteTypes() throws SQLException
     {
-        String[] types = new String[]{"Абиссинская кошка",
-                "Австралийский мист",
-                "Американская жесткошерстная",
-                "Американская короткошерстная",
-                "Американский бобтейл",
-                "Американский кёрл",
-                "Балинезийская кошка",
-                "Бенгальская кошка",
-                "Бирманская кошка",
-                "Бомбейская кошка",
-                "Бразильская короткошёрстная",
-                "Британская длинношерстная",
-                "Британская короткошерстная",
-                "Бурманская кошка",
-                "Бурмилла кошка",
-                "Гавана",
-                "Гималайская кошка",
-                "Девон-рекс",
-                "Донской сфинкс",
-                "Европейская короткошерстная",
-                "Египетская мау",
-                "Канадский сфинкс",
-                "Кимрик",
-                "Корат",
-                "Корниш-рекс",
-                "Курильский бобтейл",
-                "Лаперм",
-                "Манчкин",
-                "Мейн-ку́н",
-                "Меконгский бобтейл",
-                "Мэнкс кошка",
-                "Наполеон",
-                "Немецкий рекс",
-                "Нибелунг",
-                "Норвежская лесная кошка",
-                "Ориентальная кошка",
-                "Оцикет",
-                "Персидская кошка",
-                "Петерболд",
-                "Пиксибоб",
-                "Рагамаффин",
-                "Русская голубая кошка",
-                "Рэгдолл",
-                "Саванна",
-                "Селкирк-рекс",
-                "Сиамская кошка",
-                "Сибирская кошка",
-                "Сингапурская кошка",
-                "Скоттиш-фолд",
-                "Сноу-шу",
-                "Сомалийская кошка",
-                "Тайская кошка",
-                "Тойгер",
-                "Тонкинская кошка",
-                "Турецкая ангорская кошка",
-                "Турецкий ван",
-                "Украинский левкой",
-                "Чаузи",
-                "Шартрез",
-                "Экзотическая короткошерстная",
-                "Японский бобтейл"
-        };
-        for (String type: types)
+        for (String type: Const.types)
             statmt.execute("INSERT INTO 'types' ('type') VALUES ('"+type+"'); ");
         System.out.println("Таблица заполнена");
     }
 
     // --------Заполнение таблицы--------
-    public static void WriteDB() throws SQLException
+    public static void addCats() throws SQLException
     {
-        statmt.execute("INSERT INTO 'users' ('name', 'phone') VALUES ('Petya', 125453); ");
-        statmt.execute("INSERT INTO 'users' ('name', 'phone') VALUES ('Vasya', 321789); ");
-        statmt.execute("INSERT INTO 'users' ('name', 'phone') VALUES ('Masha', 456123); ");
-
-        System.out.println("Таблица заполнена");
+        int types_count = 61;
+        for (int i = 0; i < 100000; i++) {
+            int name_i = (int) (Math.random() * Const.names.length);
+            int type_id = (int) (Math.random() * types_count);
+            int age = (int) (Math.random() * 20);
+            double weight =  Math.round(Math.random() * 3000) / 100.0;
+            String name = Const.names[name_i];
+            String query = "INSERT INTO 'cats' ('name', 'type_id', 'age', weight)"+
+                           "VALUES ('"+name+"', '"+type_id+"', '"+
+                            age+"', '"+weight+"')";
+            //System.out.println(query);
+            statmt.execute(query);
+        }
     }
 
     // -------- Вывод таблицы--------
     public static void ReadDB() throws ClassNotFoundException, SQLException
     {
-        resSet = statmt.executeQuery("SELECT * FROM users");
-
+        Scanner sc = new Scanner(System.in);
+        String name1 = sc.nextLine();
+        String query = "SELECT * FROM cats "+
+                       "WHERE name =' "+name1+"'"+
+                       "and age > 15 and weight < 5";
+        resSet = statmt.executeQuery(query);
+        int j = 0;
         while(resSet.next())
         {
-            int id = resSet.getInt("id");
             String  name = resSet.getString("name");
-            String  phone = resSet.getString("phone");
-            System.out.println( "ID = " + id );
-            System.out.println( "name = " + name );
-            System.out.println( "phone = " + phone );
+            int type = resSet.getInt("type_id");
+            int age = resSet.getInt("age");
+            double weight = resSet.getDouble("weight");
+            System.out.println(name+" "+age+" "+weight);
             System.out.println();
+            j++;
         }
+        System.out.println("total: " + j);
         resSet.close();
         System.out.println("Таблица выведена");
     }

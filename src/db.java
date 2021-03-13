@@ -6,6 +6,7 @@ public class db {
         conn.Conn();
         conn.CreateDB();
         //conn.WriteTypes();
+        //conn.addCats();
         conn.ReadDB();
         conn.CloseDB();
     }
