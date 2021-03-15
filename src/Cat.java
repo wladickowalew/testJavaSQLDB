@@ -29,7 +29,7 @@ public class Cat implements SQLObject{
         }
     }
 
-    public Cat create_random_cat(){
+    static public Cat create_random_cat(){
         int types_count = 61;
         int name_i = (int) (Math.random() * Const.names.length);
         int type_id = (int) (Math.random() * types_count);
@@ -37,6 +37,18 @@ public class Cat implements SQLObject{
         double weight =  Math.round(Math.random() * 3000) / 100.0;
         String name = Const.names[name_i];
         return new Cat(name, type_id, age, weight);
+    }
+
+    static public Cat get_for_id(int id, Statement stmt){
+        String query = "SELECT * FROM cats "+
+                "WHERE id = " + id;
+        try {
+            ResultSet res = stmt.executeQuery(query);
+            return new Cat(res);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return null;
     }
 
     @Override
@@ -70,7 +82,7 @@ public class Cat implements SQLObject{
     @Override
     public void update_in_DB(Statement stmt) {
         String query = "UPDATE 'cats' "+
-                "SET name=" + name + ", type_id=" + type_id + ", "+
+                "SET name='" + name + "', type_id=" + type_id + ", "+
                 "age=" + age + ", weight=" + weight + " " +
                 "WHERE id=" + id;
         //System.out.println(query);

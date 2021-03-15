@@ -46,18 +46,9 @@ public class conn {
     // --------Заполнение таблицы--------
     public static void addCats() throws SQLException
     {
-        int types_count = 61;
-        for (int i = 0; i < 10000; i++) {
-            int name_i = (int) (Math.random() * Const.names.length);
-            int type_id = (int) (Math.random() * types_count);
-            int age = (int) (Math.random() * 20);
-            double weight =  Math.round(Math.random() * 3000) / 100.0;
-            String name = Const.names[name_i];
-            String query = "INSERT INTO 'cats' ('name', 'type_id', 'age', weight)"+
-                           "VALUES ('"+name+"', '"+type_id+"', '"+
-                            age+"', '"+weight+"')";
-            //System.out.println(query);
-            statmt.execute(query);
+        for (int i = 0; i < 100; i++){
+            Cat cat = Cat.create_random_cat();
+            cat.add_to_DB(statmt);
         }
     }
 
@@ -68,17 +59,13 @@ public class conn {
         String name1 = sc.nextLine();
         String query = "SELECT * FROM cats "+
                        "WHERE name =' "+name1+"'"+
-                       "and age > 15 and weight < 5";
+                       "and age > 15 and weight < 5 LIMIT 10";
         resSet = statmt.executeQuery(query);
         int j = 0;
         while(resSet.next())
         {
-            String  name = resSet.getString("name");
-            int type = resSet.getInt("type_id");
-            int age = resSet.getInt("age");
-            double weight = resSet.getDouble("weight");
-            System.out.println(name+" "+age+" "+weight);
-            System.out.println();
+            Cat cat = new Cat(resSet);
+            System.out.println(cat);
             j++;
         }
         System.out.println("total: " + j);
