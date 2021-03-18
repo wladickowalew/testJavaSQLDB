@@ -39,6 +39,18 @@ public class Cat implements SQLObject{
         return new Cat(name, type_id, age, weight);
     }
 
+    public Object[] toArray(){
+        return new Object[]{id, name, type_id, age, weight};
+    }
+
+    public void updateWithArray(Object[] arr){
+        id = (int) arr[0];
+        name = (String) arr[1];
+        type_id = (int) arr[2];
+        age = (int) arr[3];
+        weight = (double) arr[4];
+    }
+
     static public Cat get_for_id(int id, Statement stmt){
         String query = "SELECT * FROM cats "+
                 "WHERE id = " + id;

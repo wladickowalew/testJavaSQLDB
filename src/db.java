@@ -4,6 +4,8 @@ public class db {
 
     public static void main(String[] args) throws ClassNotFoundException, SQLException {
         conn.Conn();
+        Window window = new Window();
+        window.run();
 //        Cat cat = Cat.get_for_id(2, conn.statmt);
 //        System.out.println(cat);
 //        cat.name = "Суета";
@@ -14,6 +16,6 @@ public class db {
         //conn.WriteTypes();
         //conn.addCats();
         //conn.ReadDB();
-        conn.CloseDB();
+        //conn.CloseDB();
     }
 }

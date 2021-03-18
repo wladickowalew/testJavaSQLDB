@@ -3,6 +3,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -53,24 +54,37 @@ public class conn {
     }
 
     // -------- Вывод таблицы--------
-    public static void ReadDB() throws ClassNotFoundException, SQLException
+//    public static void ReadDB() throws ClassNotFoundException, SQLException
+//    {
+//        Scanner sc = new Scanner(System.in);
+//        String name1 = sc.nextLine();
+//        String query = "SELECT * FROM cats "+
+//                       "WHERE name =' "+name1+"'"+
+//                       "and age > 15 and weight < 5 LIMIT 10";
+//        resSet = statmt.executeQuery(query);
+//        int j = 0;
+//        while(resSet.next())
+//        {
+//            Cat cat = new Cat(resSet);
+//            System.out.println(cat);
+//            j++;
+//        }
+//        System.out.println("total: " + j);
+//        resSet.close();
+//        System.out.println("Таблица выведена");
+//    }
+
+    public static ArrayList<Cat> ReadDB() throws SQLException
     {
         Scanner sc = new Scanner(System.in);
-        String name1 = sc.nextLine();
         String query = "SELECT * FROM cats "+
-                       "WHERE name =' "+name1+"'"+
-                       "and age > 15 and weight < 5 LIMIT 10";
+                "WHERE age > 15 and weight < 1 LIMIT 1000";
         resSet = statmt.executeQuery(query);
-        int j = 0;
+        ArrayList<Cat> cats = new ArrayList<>();
         while(resSet.next())
-        {
-            Cat cat = new Cat(resSet);
-            System.out.println(cat);
-            j++;
-        }
-        System.out.println("total: " + j);
+            cats.add(new Cat(resSet));
         resSet.close();
-        System.out.println("Таблица выведена");
+        return cats;
     }
 
     // --------Закрытие--------
