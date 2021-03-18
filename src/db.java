@@ -3,7 +3,6 @@ import java.sql.SQLException;
 public class db {
 
     public static void main(String[] args) throws ClassNotFoundException, SQLException {
-        MyTable frame = new MyTable();
         conn.Conn();
 //        Cat cat = Cat.get_for_id(2, conn.statmt);
 //        System.out.println(cat);
