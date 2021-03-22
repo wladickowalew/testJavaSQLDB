@@ -53,6 +53,17 @@ public class conn {
         }
     }
 
+    static int nextId(){
+        String query = "SELECT MAX(id) FROM cats";
+        try {
+            resSet = statmt.executeQuery(query);
+            return resSet.getInt("MAX(id)") + 1;
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return -1;
+    }
+
     // -------- Вывод таблицы--------
 //    public static void ReadDB() throws ClassNotFoundException, SQLException
 //    {
@@ -74,11 +85,13 @@ public class conn {
 //        System.out.println("Таблица выведена");
 //    }
 
-    public static ArrayList<Cat> ReadDB() throws SQLException
+    public static ArrayList<Cat> ReadDB(String where) throws SQLException
     {
         Scanner sc = new Scanner(System.in);
-        String query = "SELECT * FROM cats "+
-                "WHERE age > 15 and weight < 1 LIMIT 1000";
+        String query = "SELECT * FROM cats";
+        if (!where.equals("")){
+            query += " WHERE " + where;
+        }
         resSet = statmt.executeQuery(query);
         ArrayList<Cat> cats = new ArrayList<>();
         while(resSet.next())

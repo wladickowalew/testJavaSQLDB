@@ -29,6 +29,13 @@ public class Cat implements SQLObject{
         }
     }
 
+    static public Cat add_new_cat(){
+        Cat cat = new Cat("", 0, 0,0);
+        cat.id = conn.nextId();
+        cat.add_to_DB(conn.statmt);
+        return cat;
+    }
+
     static public Cat create_random_cat(){
         int types_count = 61;
         int name_i = (int) (Math.random() * Const.names.length);
@@ -44,11 +51,13 @@ public class Cat implements SQLObject{
     }
 
     public void updateWithArray(Object[] arr){
-        id = (int) arr[0];
+        for (Object ob: arr)
+            System.out.println(ob);
+        id = Integer.parseInt("" + arr[0]);
         name = (String) arr[1];
-        type_id = (int) arr[2];
-        age = (int) arr[3];
-        weight = (double) arr[4];
+        type_id = Integer.parseInt("" + arr[2]);
+        age = Integer.parseInt("" + arr[3]);
+        weight = Double.parseDouble("" + arr[4]);
     }
 
     static public Cat get_for_id(int id, Statement stmt){
